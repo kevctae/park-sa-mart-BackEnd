@@ -29,7 +29,7 @@ def login():
     checkValue = cur.execute('SELECT email,password FROM Account WHERE email = %s AND password = %s', (email,password,))
     if checkValue != 0:
         userAcc = cur.fetchone()
-        expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=20)
+        expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
         token = jwt.encode({'email': userAcc['email'], 'exp' : expiredate}, app.config['SECRET_KEY'])
         mysql.connection.commit()
         cur.close()
