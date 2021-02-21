@@ -2,15 +2,13 @@ from flask import Flask, request, jsonify, session, url_for, redirect, flash
 from flask_mysqldb import MySQL
 import yaml
 import pymysql
-import bcrypt
-import auth
 from functools import wraps
 import jwt
 import datetime
 
 
+
 app = Flask(__name__)
-#Configure db
 db = yaml.load(open('db.yaml'))
 app.config['MYSQL_HOST'] = db['mysql_host']
 app.config['MYSQL_USER'] = db['mysql_user']
@@ -20,6 +18,9 @@ app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = 'parksamart'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
+
+import user
+import auth
 
 def check_token(func):
     @wraps(func)
@@ -48,6 +49,14 @@ def home():
     token = request.args.get('token')
     email = jwt.decode(token, app.config['SECRET_KEY'], 'HS256')['email']
     return email + 'you have valid token'
+
+
+@app.route('/addcar', methods=['POST'])
+@check_token
+def addcar():
+    return user.addcar()
+
+
 
 if __name__ == '__main__' :
     app.run(debug=True)
