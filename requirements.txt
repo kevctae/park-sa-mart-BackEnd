@@ -1,6 +1,6 @@
 flask
 flask_mysqldb
-yaml
+pyyaml
 pymysql
 jwt
 gunicorn
