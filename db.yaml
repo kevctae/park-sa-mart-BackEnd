@@ -1,4 +1,4 @@
-mysql_host: 'localhost'
-mysql_user: 'root'
-mysql_password: '12345678'
-mysql_db: 'parksamart'
+mysql_host: 'somchai09.trueddns.com'
+mysql_user: 'owen'
+mysql_password: 'owen1234'
+mysql_db: 'Parksamart'
