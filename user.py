@@ -3,13 +3,12 @@ from app import *
 def addcar():
     email = request.json['email']
     platenum = request.json['platenum']
-    city = request.json['city']
     cur = mysql.connection.cursor()
-    checkValue = cur.execute('SELECT email FROM Cars WHERE platenum = %s AND city = %s', (platenum,city,))
+    checkValue = cur.execute('SELECT email FROM Cars WHERE platenum = %s', (platenum,))
     if checkValue > 0:
         carDetail = cur.fetchone()
         if carDetail['email'] == None:
-            cur.execute('UPDATE Cars SET email = %s WHERE platenum = %s AND city = %s', (email,platenum,city,))
+            cur.execute('UPDATE Cars SET email = %s WHERE platenum = %s', (email,platenum,))
             mysql.connection.commit()
             cur.close()
             return jsonify({'message':'Done'})
@@ -18,7 +17,7 @@ def addcar():
             cur.close()
             return jsonify({'message':'Car Already Owned'})
     else:
-        cur.execute('INSERT INTO Cars(platenum,city,email) VALUES(%s,%s,%s)', (platenum,city,email,))
+        cur.execute('INSERT INTO Cars(platenum,email) VALUES(%s,%s)', (platenum,email,))
         mysql.connection.commit()
         cur.close()
         return jsonify({'message':'Done'})
