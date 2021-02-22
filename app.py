@@ -21,6 +21,7 @@ mysql = MySQL(app)
 
 import user
 import auth
+import parkman
 
 def check_token(func):
     @wraps(func)
