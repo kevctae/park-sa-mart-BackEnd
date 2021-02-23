@@ -20,4 +20,4 @@ jobs:
       run: docker build -t $IMAGE_NAME:$IMAGE_TAG .
       
     - name: Test
-      run: docker run --rm -i $IMAGE_NAME:$IMAGE_TAG python -m unittest
+      run: docker run -d -p 5000:5000 $IMAGE_NAME:$IMAGE_TAG
