@@ -38,6 +38,6 @@ jobs:
           host: $SERVER_HOST
           username: $SERVER_USER
           key: $SERVER_KEY
-          port: $SERVER_PORT
+          port: 43323
           script: echo "hello world"
         
