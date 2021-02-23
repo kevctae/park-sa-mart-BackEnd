@@ -37,6 +37,10 @@ def check_token(func):
         return func(*args, **kwargs)
     return wrapped
 
+@app.route('/')
+def hello_world:
+    return 'Hey, we have Flask in a Docker container!'
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     return auth.register()
@@ -61,5 +65,5 @@ def addcar():
 
 
 if __name__ == '__main__' :
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
 
