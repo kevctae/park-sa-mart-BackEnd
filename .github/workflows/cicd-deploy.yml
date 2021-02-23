@@ -35,9 +35,9 @@ jobs:
       - name: Build Deployment
         uses: appleboy/ssh-action@master
         with:
-          host: $SERVER_HOST
-          username: $SERVER_USER
-          key: $SERVER_KEY
+          host: somchai09.trueddns.com
+          username: kevctae
+          key: ${{ secrets.DEPLOY_KEY }}
           port: 43323
           script: echo "hello world"
         
