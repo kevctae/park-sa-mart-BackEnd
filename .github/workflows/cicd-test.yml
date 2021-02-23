@@ -1,0 +1,23 @@
+name: Flask Application Testing
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+    
+    env:
+     IMAGE_NAME: api-parksamart
+     IMAGE_TAG: latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Docker build
+      run: docker build -t $IMAGE_NAME:$IMAGE_TAG .
+      
+    - name: Test
+      run: docker run --rm -i $IMAGE_NAME:$IMAGE_TAG python -m unittest
