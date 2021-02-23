@@ -32,12 +32,12 @@ jobs:
           remote_user: $SERVER_USER
           remote_key: $SERVER_KEY
           
-      - name: Build Deployment
-        uses: appleboy/ssh-action@master
-        with:
-          host: $SERVER_HOST
-          username: $SERVER_USER
-          key: $SERVER_KEY
-          port: $SERVER_PORT
-          script: script
+#       - name: Build Deployment
+#         uses: appleboy/ssh-action@master
+#         with:
+#           host: $SERVER_HOST
+#           username: $SERVER_USER
+#           key: $SERVER_KEY
+#           port: $SERVER_PORT
+#           script: script
         
