@@ -9,35 +9,27 @@ jobs:
   build:
     name: Nodejs
     runs-on: ubuntu-20.04
-    
-    env:
-      SERVER_PATH: /var/www/api-parksamart.ga/html/
-      SERVER_HOST: somchai09.trueddns.com
-      SERVER_PORT: 43323
-      SERVER_USER: kevctae
-      SERVER_KEY: ${{ secrets.DEPLOY_KEY }}
-
       
     steps:
       - uses: actions/checkout@v2
 
-#       - name: rsync Deployment
-#         uses: burnett01/rsync-deployments@4.1
-#         with:
-#           switches: -avzr --delete
-#           path: .
-#           remote_path: $SERVER_PATH
-#           remote_host: $SERVER_HOST
-#           remote_port: $SERVER_PORT
-#           remote_user: $SERVER_USER
-#           remote_key: $SERVER_KEY
+      - name: rsync Deployment
+        uses: burnett01/rsync-deployments@4.1
+        with:
+          switches: -avzr --delete
+          path: .
+          remote_path: ${{ secrets.DEPLOY_API_PATH }}
+          remote_host: ${{ secrets.DEPLOY_HOST }}
+          remote_port: ${{ secrets.DEPLOY_PORT }}
+          remote_user: ${{ secrets.DEPLOY_USER }}
+          remote_key: ${{ secrets.DEPLOY_KEY }}
         
       - name: Build Deployment
         uses: appleboy/ssh-action@master
         with:
-          host: somchai09.trueddns.com
-          username: kevctae
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
-          port: 43323
+          port: ${{ secrets.DEPLOY_PORT }}
           script: echo "hello world"
         
