@@ -45,7 +45,7 @@ def register():
 def login():
     return auth.login()
 
-@app.route('/test', methods=['GET', 'POST'])
+@app.route('/home', methods=['GET', 'POST'])
 @check_token
 def home():
     token = request.args.get('token')
