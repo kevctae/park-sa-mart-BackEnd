@@ -21,23 +21,23 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: rsync Deployment
-        uses: burnett01/rsync-deployments@4.1
-        with:
-          switches: -avzr --delete
-          path: .
-          remote_path: $SERVER_PATH
-          remote_host: $SERVER_HOST
-          remote_port: $SERVER_PORT
-          remote_user: $SERVER_USER
-          remote_key: $SERVER_KEY
-#          
-#       - name: Build Deployment
-#         uses: appleboy/ssh-action@master
+#       - name: rsync Deployment
+#         uses: burnett01/rsync-deployments@4.1
 #         with:
-#           host: $SERVER_HOST
-#           username: $SERVER_USER
-#           key: $SERVER_KEY
-#           port: $SERVER_PORT
-#           script: script
+#           switches: -avzr --delete
+#           path: .
+#           remote_path: $SERVER_PATH
+#           remote_host: $SERVER_HOST
+#           remote_port: $SERVER_PORT
+#           remote_user: $SERVER_USER
+#           remote_key: $SERVER_KEY
+        
+      - name: Build Deployment
+        uses: appleboy/ssh-action@master
+        with:
+          host: $SERVER_HOST
+          username: $SERVER_USER
+          key: $SERVER_KEY
+          port: $SERVER_PORT
+          script: echo "hello world"
         
