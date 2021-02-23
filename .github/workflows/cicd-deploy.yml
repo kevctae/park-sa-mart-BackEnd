@@ -1,0 +1,83 @@
+name: Flask Application Deployment
+
+on: 
+  push:
+    branches:
+      - master
+      
+jobs:
+  build:
+    name: Nodejs
+    runs-on: ubuntu-20.04
+    
+    env:
+      SERVER_PATH: /var/www/api-parksamart.ga/html/
+      SERVER_HOST: somchai09.trueddns.com
+      SERVER_PORT: 43323
+      SERVER_USER: kevctae
+      SERVER_KEY: -----BEGIN RSA PRIVATE KEY-----
+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
+-----END RSA PRIVATE KEY-----
+
+      
+    steps:
+      - uses: actions/checkout@v
+        name: rsync deployments
+        
+      - uses: burnett01/rsync-deployments@4.1
+        with:
+          switches: -avzr --delete
+          path: .
+          remote_path: $SERVER_PATH
+          remote_host: $SERVER_HOST
+          remote_port: $SERVER_PORT
+          remote_user: $SERVER_USER
+          remote_key: $SERVER_KEY
