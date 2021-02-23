@@ -15,7 +15,7 @@ jobs:
       SERVER_HOST: somchai09.trueddns.com
       SERVER_PORT: 43323
       SERVER_USER: kevctae
-      SERVER_KEY: ${{ secrets.DEPLY_KEY }}
+      SERVER_KEY: ${{ secrets.DEPLOY_KEY }}
 
       
     steps:
