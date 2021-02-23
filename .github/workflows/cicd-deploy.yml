@@ -1,0 +1,32 @@
+name: Flask Application Deployment
+
+on: 
+  push:
+    branches:
+      - master
+      
+jobs:
+  build:
+    name: Nodejs
+    runs-on: ubuntu-20.04
+    
+    env:
+      SERVER_PATH: /var/www/api-parksamart.ga/html/
+      SERVER_HOST: somchai09.trueddns.com
+      SERVER_PORT: 43323
+      SERVER_USER: kevctae
+      SERVER_KEY: kevin-cicd
+      
+    steps:
+      - uses: actions/checkout@v
+        name: rsync deployments
+        
+      - uses: burnett01/rsync-deployments@4.1
+        with:
+          switches: -avzr --delete
+          path: .
+          remote_path: $SERVER_PATH
+          remote_host: $SERVER_HOST
+          remote_port: $SERVER_PORT
+          remote_user: $SERVER_USER
+          remote_key: $SERVER_KEY
