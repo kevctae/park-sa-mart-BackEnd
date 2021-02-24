@@ -7,4 +7,4 @@ fi
 
 docker image rm api-parksamart
 docker build -t parksamart:latest .
-docker run -d -p 85:5000 test:latest
+docker run -d -p 81:5000 test:latest
