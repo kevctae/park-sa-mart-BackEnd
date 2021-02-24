@@ -30,4 +30,6 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
           port: ${{ secrets.DEPLOY_PORT }}
-          script: bash deploy_script.sh
+          script: |
+            cd ${{ secrets.DEPLOY_API_PATH }}
+            bash deploy_script.sh
