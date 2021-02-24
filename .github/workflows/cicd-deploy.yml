@@ -7,7 +7,6 @@ on:
       
 jobs:
   build:
-    name: Nodejs
     runs-on: ubuntu-20.04
       
     steps:
@@ -31,10 +30,4 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
           port: ${{ secrets.DEPLOY_PORT }}
-          script: |
-            docker container stop $(docker ps | grep -w api-parksamart | awk {'print $1}')
-            docker container rm $(docker ps -a | grep -w api-parksamart | awk {'print $1}')
-            docker image rm api-parksamart
-            docker build -t api-parksamart:latest .
-            docker run -d -p 81:5000 api-parksamart:latest
-            
+          script: bash deploy_script.sh
