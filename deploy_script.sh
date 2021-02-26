@@ -1,4 +1,4 @@
-container=$(docker ps | grep -w apiparksamart | awk '{print $1}')
+container=$(docker ps | grep -E "(^| )api-parksamart:latest( |$)" | awk '{print $1}')
 if [[ $container ]]
     then
         docker container stop $container
