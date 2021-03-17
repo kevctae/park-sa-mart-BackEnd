@@ -24,16 +24,31 @@ import user
 import auth
 import parkman
 
+# def check_token(func):
+#     @wraps(func)
+#     def wrapped(*args, **kwargs):
+#         token = request.args.get('token')
+#         if not token:
+#             return jsonify({'message' : 'Missing token'}), 403
+#         try:
+#             data = jwt.decode(token, app.config['SECRET_KEY'], 'HS256')
+#         except:
+#             return jsonify({'message' : 'Invalid token'}), 403
+#         return func(*args, **kwargs)
+#     return wrapped
+
 def check_token(func):
     @wraps(func)
     def wrapped(*args, **kwargs):
-        token = request.args.get('token')
-        if not token:
-            return jsonify({'message' : 'Missing token'}), 403
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'], 'HS256')
+            token = request.json['token']
+            try:
+                data = jwt.decode(token, app.config['SECRET_KEY'], 'HS256')
+            except:
+                return jsonify({'message' : 'Invalid token'}), 403
         except:
-            return jsonify({'message' : 'Invalid token'}), 403
+            return jsonify({'message' : 'Missing token'}), 403
+        
         return func(*args, **kwargs)
     return wrapped
 
@@ -48,9 +63,9 @@ def login():
 @app.route('/home', methods=['GET', 'POST'])
 @check_token
 def home():
-    token = request.args.get('token')
+    token = request.json['token']
     email = jwt.decode(token, app.config['SECRET_KEY'], 'HS256')['email']
-    return email + 'you have valid token'
+    return email + ' you have valid token'
 
 
 @app.route('/addcar', methods=['POST'])
@@ -60,6 +75,5 @@ def addcar():
 
 
 
-if __name__ == '__main__' :
-    app.run(debug=True, host='0.0.0.0')
-
+if __name__ == '__main__' :     
+    app.run(debug=True)
