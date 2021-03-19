@@ -29,8 +29,8 @@ def editprofile():
         return jsonify({'message' : 'EMAIL_EXISTED'})
     else:
         cur.execute('UPDATE Account SET email = %s, password = %s, fname = %s, lname = %s WHERE email = %s', (email,password,fname,lname,old_email,))
-        expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
-        token = jwt.encode({'email': userAcc['email'], 'exp' : expiredate}, app.config['SECRET_KEY'])
+        expiredate = '120'
+        token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
         mysql.connection.commit()
         cur.close()
-        return jsonify({'email' : email, 'token' : token})
+        return jsonify({'email' : email, 'token' : token, 'expiresIn' : expiredate})
