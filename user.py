@@ -14,18 +14,18 @@ def editprofile():
         return jsonify({'message' : 'EMAIL_EXISTED'})
     else:
         cur.execute('UPDATE Account SET email = %s, password = %s, fname = %s, lname = %s WHERE email = %s', (email,password,fname,lname,old_email,))
-        expiredate = '120'
+        expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
         token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
         mysql.connection.commit()
         cur.close()
-        return jsonify({'email' : email, 'token' : token, 'expiresIn' : expiredate})
+        return jsonify({'email' : email, 'token' : token, 'expiresIn' : '120'})
 
 
 def addcar():
     email = request.json['email']
     platenum = request.json['platenum']
     platecity = request.json['platecity']
-    expiredate = '120'
+    expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
     token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
     cur = mysql.connection.cursor()
     checkValue = cur.execute('SELECT email FROM Cars WHERE platenum = %s and platecity = %s', (platenum,platecity,))
@@ -37,7 +37,7 @@ def addcar():
         cur.execute('INSERT INTO Cars(platenum,platecity,email) VALUES(%s,%s,%s)', (platenum,platecity,email,))
         mysql.connection.commit()
         cur.close()
-        return jsonify({'email' : email, 'token' : token, 'expiresIn' : expiredate})
+        return jsonify({'email' : email, 'token' : token, 'expiresIn' : '120'})
 
 
 def addcard():
@@ -48,12 +48,13 @@ def addcard():
     cvv = request.json['cvv']
     fname = request.json['fname']
     lname = request.json['lname']
-    expiredate = '120'
+    expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
     token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
     cur = mysql.connection.cursor()
     checkValue = cur.execute('SELECT * FROM Card WHERE card_no = %s', (card_no,))
+    cur.fetchall()
     if checkValue == 0:
-        cur.execute('INSERT INTO Card(card_no, exp_year, exp_month, cvv, fname, lname) VALUE (%s,%s,%s,%s,%s,%s,)', (card_no, exp_year, exp_month, cvv, fname, lname,))
+        cur.execute('INSERT INTO Card(card_no,exp_year,exp_month,cvv,fname,lname) VALUES(%s,%s,%s,%s,%s,%s)', (card_no, exp_year, exp_month, cvv, fname, lname,))
     cur.fetchall()
     checkValue = cur.execute('SELECT * FROM CardOwns WHERE card_no = %s and email = %s', (card_no,email,))
     if checkValue > 0:
@@ -61,7 +62,7 @@ def addcard():
         cur.close()
         return jsonify({'message' : 'USER_ALREADY_OWNS_CARD'})
     else:
-        cur.execute('INSERT INTO CardOwns (card_no,email) VALUE (%s,%s)', (card_no, email,))
+        cur.execute('INSERT INTO CardOwns(card_no,email) VALUES(%s,%s)', (card_no, email,))
         mysql.connection.commit()
         cur.close()
-        return jsonify({'email' : email, 'card_no' : card_no, 'token' : token, 'expiresIn' : expiredate})
+        return jsonify({'email' : email, 'card_no' : card_no, 'token' : token, 'expiresIn' : '120'})

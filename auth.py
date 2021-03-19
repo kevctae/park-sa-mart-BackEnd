@@ -18,11 +18,11 @@ def register():
             return jsonify({'message' : 'EMAIL_EXISTED'})
         else:
             cur.execute('INSERT INTO Account(email,password,fname,lname) VALUES(%s,%s,%s,%s)', (email,password,fname,lname,))
-            expiredate = '120'
+            expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
             token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
             mysql.connection.commit()
             cur.close()
-            return jsonify({'token' : token, 'email' : email, 'expiresIn' : expiredate})
+            return jsonify({'token' : token, 'email' : email, 'expiresIn' : '120'})
 
 def login():
     email = request.json['email']
@@ -31,11 +31,11 @@ def login():
     checkValue = cur.execute('SELECT email,password FROM Account WHERE email = %s AND password = %s', (email,password,))
     if checkValue != 0:
         userAcc = cur.fetchone()
-        expiredate = '120'
+        expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
         token = jwt.encode({'email': userAcc['email'], 'exp' : expiredate}, app.config['SECRET_KEY'])
         mysql.connection.commit()
         cur.close()
-        return jsonify({'email': userAcc['email'], 'token' : token, 'expiresIn' : expiredate})
+        return jsonify({'email': userAcc['email'], 'token' : token, 'expiresIn' : '120'})
     else:
         mysql.connection.commit()
         cur.close()
