@@ -79,6 +79,11 @@ def addcar():
 def editprofile():
     return user.editprofile()
 
+@app.route('/addcard', methods=['POST'])
+@check_token
+def addcard():
+    return user.addcard()
+
 
 
 if __name__ == '__main__' :     
