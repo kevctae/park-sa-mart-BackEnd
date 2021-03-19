@@ -56,7 +56,7 @@ def check_token(func):
 def register():
     return auth.register()
 
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['POST'])
 def login():
     return auth.login()
 
