@@ -52,7 +52,7 @@ def check_token(func):
         return func(*args, **kwargs)
     return wrapped
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['POST'])
 def register():
     return auth.register()
 

@@ -28,6 +28,8 @@ def editprofile():
     cur = mysql.connection.cursor()
     checkValue = cur.execute('SELECT email FROM Account WHERE email = %s', (email,))
     if checkValue > 0:
+        mysql.connection.commit()
+        cur.close()
         return jsonify({'message' : 'EMAIL_EXISTED'})
     else:
         cur.execute('UPDATE Account SET email = %s, password = %s, fname = %s, lname = %s WHERE email = %s', (email,password,fname,lname,old_email,))

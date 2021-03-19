@@ -15,12 +15,14 @@ def register():
         if checkValue > 0:
             mysql.connection.commit()
             cur.close()
-            return 'Email Exist'
+            return jsonify({'message' : 'EMAIL_EXISTED'})
         else:
             cur.execute('INSERT INTO Account(email,password,fname,lname) VALUES(%s,%s,%s,%s)', (email,password,fname,lname,))
+            expiredate = '120'
+            token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
             mysql.connection.commit()
             cur.close()
-            return 'Register Done'
+            return jsonify({'token' : token, 'email' : email, 'expiresIn' : expiredate})
 
 def login():
     email = request.json['email']
