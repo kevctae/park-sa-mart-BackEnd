@@ -24,7 +24,13 @@ def editprofile():
     fname = request.json['fname']
     lname = request.json['lname']
     cur = mysql.connection.cursor()
-    cur.execute('UPDATE Account SET email = %s, password = %s, fname = %s, lname = %s WHERE email = %s', (email,password,fname,lname,old_email,))
-    mysql.connection.commit()
-    cur.close()
-    return jsonify({'email' : email})
+    checkValue = cur.execute('SELECT email FROM Account WHERE email = %s', (email,))
+    if checkValue > 0:
+        return jsonify({'message' : 'EMAIL_EXISTED'})
+    else:
+        cur.execute('UPDATE Account SET email = %s, password = %s, fname = %s, lname = %s WHERE email = %s', (email,password,fname,lname,old_email,))
+        expiredate = '120'
+        token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
+        mysql.connection.commit()
+        cur.close()
+        return jsonify({'email' : email, 'token' : token, 'expiresIn' : expiredate})
