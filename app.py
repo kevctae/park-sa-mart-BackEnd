@@ -74,6 +74,12 @@ def addcar():
     return user.addcar()
 
 
+@app.route('/editprofile', methods=['POST'])
+@check_token
+def editprofile():
+    return user.editprofile()
+
+
 
 if __name__ == '__main__' :     
     app.run(debug=True, host = '0.0.0.0')
