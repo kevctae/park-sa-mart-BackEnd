@@ -37,4 +37,4 @@ def login():
     else:
         mysql.connection.commit()
         cur.close()
-        return 'incorrect email or password'
+        return jsonify({'message' : 'INVALID_EMAIL_OR_PASSWORD'})
