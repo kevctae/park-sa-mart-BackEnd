@@ -4,17 +4,19 @@ def addcar():
     email = request.json['email']
     platenum = request.json['platenum']
     platecity = request.json['platecity']
+    expiredate = '120'
+    token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
     cur = mysql.connection.cursor()
     checkValue = cur.execute('SELECT email FROM Cars WHERE platenum = %s and platecity = %s', (platenum,platecity,))
     if checkValue > 0:
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message':'Car Already Owned'})
+        return jsonify({'message':'CAR_OWNED'})
     else:
         cur.execute('INSERT INTO Cars(platenum,platecity,email) VALUES(%s,%s,%s)', (platenum,platecity,email,))
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message':'Done'})
+        return jsonify({'email' : email, 'token' : token, 'expiresIn' : expiredate})
 
 
 def editprofile():
