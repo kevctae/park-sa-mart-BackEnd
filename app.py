@@ -73,6 +73,10 @@ def home():
 def addcar():
     return user.addcar()
 
+@app.route('/visitorentry', methods=['GET'])
+def visitorentry():
+    return parkman.visitorentry()
+
 
 
 if __name__ == '__main__' :     
