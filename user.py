@@ -15,3 +15,16 @@ def addcar():
         mysql.connection.commit()
         cur.close()
         return jsonify({'message':'Done'})
+
+
+def editprofile():
+    old_email = request.json['old_email']
+    email = request.json['email']
+    password = request.json['password']
+    fname = request.json['fname']
+    lname = request.json['lname']
+    cur = mysql.connection.cursor()
+    cur.execute('UPDATE Account SET email = %s, password = %s, fname = %s, lname = %s WHERE email = %s', (email,password,fname,lname,old_email,))
+    mysql.connection.commit()
+    cur.close()
+    return jsonify({'email' : email})
