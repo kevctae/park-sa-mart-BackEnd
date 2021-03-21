@@ -66,3 +66,14 @@ def addcard():
         mysql.connection.commit()
         cur.close()
         return jsonify({'email' : email, 'card_no' : card_no, 'token' : token, 'expiresIn' : '120'})
+
+def removecard():
+    email = request.json['email']
+    card_no = request.json['card_no']
+    expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
+    token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
+    cur = mysql.connection.cursor()
+    cur.execute('DELETE FROM CardOwns WHERE email = %s and card_no = %s', (email,card_no,))
+    mysql.connection.commit()
+    cur.close()
+    return jsonify({'email' : email, 'card_no' : card_no, 'token' : token, 'expiresIn' : '120'})
