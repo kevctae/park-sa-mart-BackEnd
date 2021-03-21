@@ -95,6 +95,12 @@ def removecard():
     return user.removecard()
 
 
+@app.route('/setprimarycard', methods=['POST'])
+@check_token
+def setprimarycard():
+    return user.setprimarycard()
+
+
 
 if __name__ == '__main__' :     
     app.run(debug=True, host = '0.0.0.0')
