@@ -39,6 +39,18 @@ def addcar():
         cur.close()
         return jsonify({'email' : email, 'token' : token, 'expiresIn' : '120'})
 
+def removecar():
+    email = request.json['email']
+    platenum = request.json['platenum']
+    platecity = request.json['platecity']
+    expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
+    token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
+    cur = mysql.connection.cursor()
+    cur.execute('DELETE FROM Cars WHERE email = %s and platenum = %s and platecity = %s', (email,platenum,platecity,))
+    mysql.connection.commit()
+    cur.close()
+    return jsonify({'email' : email, 'platenum' : platenum, 'platecity' : platecity, 'token' : token, 'expiresIn' : '120'})
+
 
 def addcard():
     email = request.json['email']
