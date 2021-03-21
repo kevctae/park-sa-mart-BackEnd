@@ -84,6 +84,11 @@ def editprofile():
 def addcard():
     return user.addcard()
 
+@app.route('/removecard', methods=['POST'])
+@check_token
+def removecard():
+    return user.removecard()
+
 
 
 if __name__ == '__main__' :     
