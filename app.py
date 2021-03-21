@@ -73,6 +73,11 @@ def home():
 def addcar():
     return user.addcar()
 
+@app.route('/removecar', methods=['POST'])
+@check_token
+def removecar():
+    return user.removecar()
+
 
 @app.route('/editprofile', methods=['POST'])
 @check_token
