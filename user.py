@@ -89,3 +89,21 @@ def removecard():
     mysql.connection.commit()
     cur.close()
     return jsonify({'email' : email, 'card_no' : card_no, 'token' : token, 'expiresIn' : '120'})
+
+def setprimarycard():
+    email = request.json['email']
+    card_no = request.json['card_no']
+    expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
+    token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
+    cur = mysql.connection.cursor()
+    checkValue = cur.execute('SELECT * FROM CardOwns WHERE email = %s and card_no = %s', (email,card_no,))
+    if checkValue > 0:
+        cur.fetchall()
+        cur.execute('UPDATE Account SET primary_card_no = %s WHERE email = %s', (card_no,email,))
+        mysql.connection.commit()
+        cur.close()
+        return jsonify({'email' : email, 'card_no' : card_no, 'token' : token, 'expiresIn' : '120'})
+    else:
+        mysql.connection.commit()
+        cur.close()
+        return jsonify({'message' : 'CARD_NOT_OWNED_BY_THE_USER'})
