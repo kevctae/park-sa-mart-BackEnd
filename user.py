@@ -120,4 +120,3 @@ def returncarlist():
         mysql.connection.commit()
         cur.close()
         return jsonify({'message' : 'NO_CAR_OWNED'})
-
