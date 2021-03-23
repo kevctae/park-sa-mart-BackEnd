@@ -152,11 +152,15 @@ def setmainpaymentmethod():
 
 def retrieveprofile():
     email= request.json['email']
+    expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
+    token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
     cur=mysql.connection.cursor()
     checkvalue = cur.execute('SELECT fname,lname,wallet,main_payment_method,primary_card_no FROM Account WHERE email = %s' , (email,))
     if checkvalue>0:
-        result=cur.fetchall()
+        result=cur.fetchone()
         cur.close()
+        result['token'] = token
+        result['expiresIn'] = '120'
         return jsonify(result)
     else:
         mysql.connection.commit()
