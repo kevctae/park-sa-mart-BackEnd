@@ -94,7 +94,6 @@ def addcard():
 def removecard():
     return user.removecard()
 
-
 @app.route('/setprimarycard', methods=['POST'])
 @check_token
 def setprimarycard():
@@ -105,7 +104,10 @@ def setprimarycard():
 def returncarlist():
     return user.returncarlist()
 
-
+@app.route('/setmainpaymentmethod', methods=['POST'])
+@check_token
+def setmainpaymentmethod():
+    return user.setmainpaymentmethod()
 
 if __name__ == '__main__' :     
     app.run(debug=True, host = '0.0.0.0')

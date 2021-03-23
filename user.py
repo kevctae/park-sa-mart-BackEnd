@@ -108,6 +108,7 @@ def setprimarycard():
         cur.close()
         return jsonify({'message' : 'CARD_NOT_OWNED_BY_THE_USER'})
 
+
 def returncarlist():
     email =  request.json['email']
     cur= mysql.connection.cursor()
@@ -120,3 +121,32 @@ def returncarlist():
         mysql.connection.commit()
         cur.close()
         return jsonify({'message' : 'NO_CAR_OWNED'})
+
+def setmainpaymentmethod():
+    email = request.json['email']
+    method = request.json['method']
+    expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
+    token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
+    cur = mysql.connection.cursor()
+    if method == 'wallet':
+        cur.execute('UPDATE Account SET main_payment_method = %s WHERE email = %s', (method,email,))
+        mysql.connection.commit()
+        cur.close()
+        return jsonify({'email' : email, 'method' : method, 'token' : token, 'expiresIn' : '120'})
+    elif method == 'card':
+        card_no = request.json['card_no']
+        checkValue = cur.execute('SELECT * FROM CardOwns WHERE email = %s and card_no = %s', (email,card_no,))
+        if checkValue == 0:
+            mysql.connection.commit()
+            cur.close()
+            return jsonify({'message' : 'CARD_NOT_OWNED_BY_THE_USER'})
+        cur.fetchall()
+        cur.execute('UPDATE Account SET main_payment_method = %s, primary_card_no = %s WHERE email = %s', (method,card_no,email,))
+        mysql.connection.commit()
+        cur.close()
+        return jsonify({'email' : email, 'method' : method, 'token' : token, 'expiresIn' : '120'})
+    else:
+        mysql.connection.commit()
+        cur.close()
+        return jsonify({'message' : 'METHOD_CAN_ONLY_BE_CARD_OR_WALLET'})
+
