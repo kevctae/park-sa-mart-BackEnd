@@ -22,7 +22,7 @@ mysql = MySQL(app)
 
 import user
 import auth
-import parkman
+import camera
 
 # def check_token(func):
 #     @wraps(func)
@@ -113,6 +113,10 @@ def setmainpaymentmethod():
 @check_token
 def retrieveprofile():
     return user.retrieveprofile()
+
+@app.route('/carentry', methods=['POST'])
+def carentry():
+    return camera.carentry()
 
 if __name__ == '__main__' :     
     app.run(debug=True, host = '0.0.0.0')
