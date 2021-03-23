@@ -94,11 +94,15 @@ def addcard():
 def removecard():
     return user.removecard()
 
-
 @app.route('/setprimarycard', methods=['POST'])
 @check_token
 def setprimarycard():
     return user.setprimarycard()
+
+@app.route('/setmainpaymentmethod', methods=['POST'])
+@check_token
+def setmainpaymentmethod():
+    return user.setmainpaymentmethod()
 
 
 
