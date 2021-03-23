@@ -109,5 +109,10 @@ def returncarlist():
 def setmainpaymentmethod():
     return user.setmainpaymentmethod()
 
+@app.route('/retrieveprofile', methods=['GET'])
+@check_token
+def retrieveprofile():
+    return user.retrieveprofile()
+
 if __name__ == '__main__' :     
     app.run(debug=True, host = '0.0.0.0')
