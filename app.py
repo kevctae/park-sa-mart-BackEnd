@@ -100,6 +100,11 @@ def removecard():
 def setprimarycard():
     return user.setprimarycard()
 
+@app.route('/returncarlist', methods=['GET'])
+@check_token
+def returncarlist():
+    return user.returncarlist()
+
 
 
 if __name__ == '__main__' :     
