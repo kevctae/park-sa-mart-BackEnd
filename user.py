@@ -108,6 +108,20 @@ def setprimarycard():
         cur.close()
         return jsonify({'message' : 'CARD_NOT_OWNED_BY_THE_USER'})
 
+
+def returncarlist():
+    email =  request.json['email']
+    cur= mysql.connection.cursor()
+    checkValue = cur.execute('SELECT platenum,platecity FROM Cars WHERE email = %s ', (email,))
+    if checkValue > 0:
+        myresult = cur.fetchall()
+        cur.close()
+        return jsonify(myresult)
+    else:
+        mysql.connection.commit()
+        cur.close()
+        return jsonify({'message' : 'NO_CAR_OWNED'})
+
 def setmainpaymentmethod():
     email = request.json['email']
     method = request.json['method']
@@ -135,3 +149,4 @@ def setmainpaymentmethod():
         mysql.connection.commit()
         cur.close()
         return jsonify({'message' : 'METHOD_CAN_ONLY_BE_CARD_OR_WALLET'})
+
