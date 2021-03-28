@@ -4,3 +4,4 @@ pyyaml
 pymysql
 pyjwt
 gunicorn
+flask_cors
