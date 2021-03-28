@@ -5,10 +5,13 @@ import pymysql
 from functools import wraps
 import jwt
 import datetime
+from flask_cors import CORS
 
 
 
 app = Flask(__name__)
+cors = CORS(app)
+
 db = yaml.load(open('db.yaml'), Loader=yaml.FullLoader)
 app.config['MYSQL_HOST'] = db['mysql_host']
 app.config['MYSQL_USER'] = db['mysql_user']
