@@ -39,4 +39,4 @@ def login():
     else:
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message' : 'INVALID_EMAIL_OR_PASSWORD'})
+        return jsonify({'message' : 'INVALID_EMAIL_OR_PASSWORD'}), 401
