@@ -112,7 +112,7 @@ def returncarlist():
 def setmainpaymentmethod():
     return user.setmainpaymentmethod()
 
-@app.route('/retrieveprofile', methods=['GET'])
+@app.route('/retrieveprofile', methods=['POST'])
 @check_token
 def retrieveprofile():
     return user.retrieveprofile()
