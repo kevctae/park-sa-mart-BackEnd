@@ -121,5 +121,9 @@ def retrieveprofile():
 def carentry():
     return camera.carentry()
 
+@app.route('/updatecarfloor', methods=['POST'])
+def updatecarfloor():
+    return camera.updatecarfloor()
+
 if __name__ == '__main__' :     
     app.run(debug=True, host = '0.0.0.0')
