@@ -102,7 +102,7 @@ def removecard():
 def setprimarycard():
     return user.setprimarycard()
 
-@app.route('/returncarlist', methods=['GET'])
+@app.route('/returncarlist', methods=['POST'])
 @check_token
 def returncarlist():
     return user.returncarlist()
