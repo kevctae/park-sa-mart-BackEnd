@@ -7,8 +7,7 @@ def carentry():
         floor = request.json['floor']
         parking_platenum = request.json['parking_platenum']
         parking_platecity = request.json['parking_platecity']
-        entry_date = request.json['entry_date']
-        entry_time = request.json['entry_time']
+        entry_datetime = request.json['entry_date']
     except:
         return jsonify({'message' : 'Failed'})
     cur = mysql.connection.cursor()
@@ -19,8 +18,11 @@ def carentry():
     else:
         cur.fetchall()
         email = None
-    cur.execute('INSERT INTO Parking_record(entry_picture,building,floor,parking_platenum,parking_platecity,entry_date,entry_time,email) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)', (entry_picture,building,floor,parking_platenum,parking_platecity,entry_date,entry_time,email,))
-    mysql.connection.commit()
-    cur.close()
-    return jsonify({'message' : 'Success'})
+    try:
+        cur.execute('INSERT INTO Parking_record(entry_picture,building,floor,parking_platenum,parking_platecity,entry_date,entry_time,email) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)', (entry_picture,building,floor,parking_platenum,parking_platecity,entry_date,entry_time,email,))
+        mysql.connection.commit()
+        cur.close()
+        return jsonify({'message' : 'Success'})
+    except:
+        return jsonify({'message' : 'Failed'})
     
