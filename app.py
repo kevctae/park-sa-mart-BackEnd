@@ -23,6 +23,11 @@ app.config['SECRET_KEY'] = 'parksamart'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
+def generate_token(email):
+    expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=600)
+    token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
+    return token
+
 import user
 import auth
 import camera
@@ -55,10 +60,7 @@ def check_token(func):
         return func(*args, **kwargs)
     return wrapped
 
-def generate_token(email):
-    expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
-    token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
-    return token
+
 
 @app.route('/register', methods=['POST'])
 def register():
