@@ -143,5 +143,9 @@ def topupwallet():
 def currentparkingsession():
     return parking.currentparkingsession()
 
+@app.route('/getavailableparkingspace', methods=['GET'])
+def getavailableparkingspace():
+    return parking.getavailableparkingspace()
+
 if __name__ == '__main__' :     
     app.run(debug=True, host = '0.0.0.0')
