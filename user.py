@@ -188,5 +188,5 @@ def topupwallet():
     else:
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message' : 'EMAIL_NOT_EXISTED'})
+        return jsonify({'message' : 'INVALID_EMAIL'})
      
