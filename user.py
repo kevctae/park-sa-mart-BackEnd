@@ -25,8 +25,9 @@ def addcar():
     email = request.json['email']
     platenum = request.json['platenum']
     platecity = request.json['platecity']
-    expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
-    token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
+    brand = request.json['brand']
+    model = request.json['model']
+    token = generate_token(email)
     cur = mysql.connection.cursor()
     checkValue = cur.execute('SELECT email FROM Cars WHERE platenum = %s and platecity = %s', (platenum,platecity,))
     if checkValue > 0:
@@ -34,7 +35,7 @@ def addcar():
         cur.close()
         return jsonify({'message':'CAR_OWNED'})
     else:
-        cur.execute('INSERT INTO Cars(platenum,platecity,email) VALUES(%s,%s,%s)', (platenum,platecity,email,))
+        cur.execute('INSERT INTO Cars(platenum,platecity,email,brand,model) VALUES(%s,%s,%s,%s,%s)', (platenum,platecity,email,brand,model,))
         mysql.connection.commit()
         cur.close()
         return jsonify({'email' : email, 'token' : token, 'expiresIn' : '120'})
@@ -112,7 +113,7 @@ def setprimarycard():
 def returncarlist():
     email =  request.json['email']
     cur= mysql.connection.cursor()
-    checkValue = cur.execute('SELECT platenum,platecity FROM Cars WHERE email = %s ', (email,))
+    checkValue = cur.execute('SELECT platenum,platecity,brand,model FROM Cars WHERE email = %s ', (email,))
     if checkValue > 0:
         myresult = cur.fetchall()
         cur.close()
