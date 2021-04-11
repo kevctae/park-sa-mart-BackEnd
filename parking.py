@@ -30,6 +30,7 @@ def currentparkingsession():
             result['payment_status'] = True
         result['token'] = token
         result['expiresIn'] = '600'
+        result['email'] = email
         mysql.connection.commit()
         cur.close()
         return jsonify(result)
