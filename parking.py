@@ -37,6 +37,6 @@ def currentparkingsession():
     else:
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message' : 'NO_CURRENT_PAKRING_SESSION_FOUND'})
+        return jsonify({'message' : 'NO_CURRENT_PARKING_SESSION_FOUND'})
         
 
