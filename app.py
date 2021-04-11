@@ -55,6 +55,11 @@ def check_token(func):
         return func(*args, **kwargs)
     return wrapped
 
+def generate_token(email):
+    expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
+    token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
+    return token
+
 @app.route('/register', methods=['POST'])
 def register():
     return auth.register()
@@ -124,6 +129,11 @@ def carentry():
 @app.route('/updatecarfloor', methods=['POST'])
 def updatecarfloor():
     return camera.updatecarfloor()
+
+@app.route('/topupwallet', methods=['POST'])
+@check_token
+def topupwallet():
+    return user.topupwallet()
 
 if __name__ == '__main__' :     
     app.run(debug=True, host = '0.0.0.0')

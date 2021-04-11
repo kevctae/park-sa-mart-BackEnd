@@ -166,3 +166,27 @@ def retrieveprofile():
         mysql.connection.commit()
         cur.close()
         return jsonify({'message' : 'INVALID_EMAIL'})
+
+def topupwallet():
+    email = request.json['email']
+    money_to_add = request.json['money_to_add']
+    cur = mysql.connection.cursor()
+    checkValue = cur.execute('SELECT * FROM Account WHERE email = %s', (email,))
+    if checkValue > 0:
+        result = cur.fetchone()
+        try:
+            wallet = result['wallet'] + money_to_add
+        except:
+            mysql.connection.commit()
+            cur.close()
+            return jsonify({'message' : 'MONEY_SHOULD_ONLY_CONTAIN_NUMBER'})
+        cur.execute('UPDATE Account SET wallet = %s WHERE email = %s', (wallet,email,))
+        mysql.connection.commit()
+        cur.close()
+        token = generate_token(email)
+        return jsonify({'email' : email, 'wallet' : wallet, 'token' : token, 'expiresIn' : '120'})
+    else:
+        mysql.connection.commit()
+        cur.close()
+        return jsonify({'message' : 'EMAIL_NOT_EXISTED'})
+     
