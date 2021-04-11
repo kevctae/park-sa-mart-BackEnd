@@ -26,7 +26,7 @@ def carentry():
     except:
         return jsonify({'message' : 'Failed'})
     
-def updatecarfloor():
+def updatecarfloor(): 
     try:
         building = request.json['building']
         floor = request.json['floor']
