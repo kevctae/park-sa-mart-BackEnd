@@ -6,7 +6,7 @@ from functools import wraps
 import jwt
 import datetime
 from flask_cors import CORS
-
+import math
 
 
 app = Flask(__name__)
@@ -31,6 +31,7 @@ def generate_token(email):
 import user
 import auth
 import camera
+import parking
 
 # def check_token(func):
 #     @wraps(func)
@@ -136,6 +137,11 @@ def updatecarfloor():
 @check_token
 def topupwallet():
     return user.topupwallet()
+
+@app.route('/currentparkingsession', methods=['POST'])
+@check_token
+def currentparkingsession():
+    return parking.currentparkingsession()
 
 if __name__ == '__main__' :     
     app.run(debug=True, host = '0.0.0.0')
