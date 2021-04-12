@@ -24,7 +24,7 @@ def carentry():
         cur.close()
         return jsonify({'message' : 'Success'})
     except:
-        return jsonify({'message' : 'Failed'})
+        return jsonify({'message' : 'Failed, Cannor Insert Into DB'})
     
 def updatecarfloor(): 
     try:
