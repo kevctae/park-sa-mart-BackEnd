@@ -123,12 +123,12 @@ def setmainpaymentmethod():
     method = request.json['method']
     token = generate_token(email)
     cur = mysql.connection.cursor()
-    if method == 'wallet':
+    if method == 'Wallet':
         cur.execute('UPDATE Account SET main_payment_method = %s WHERE email = %s', (method,email,))
         mysql.connection.commit()
         cur.close()
         return jsonify({'email' : email, 'method' : method, 'token' : token, 'expiresIn' : '600'})
-    elif method == 'card':
+    elif method == 'VISA':
         card_no = request.json['card_no']
         checkValue = cur.execute('SELECT * FROM CardOwns WHERE email = %s and card_no = %s', (email,card_no,))
         if checkValue == 0:
