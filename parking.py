@@ -37,7 +37,7 @@ def currentparkingsession():
     else:
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message' : 'NO_CURRENT_PAKRING_SESSION_FOUND'}), 200
+        return jsonify({'message' : 'NO_CURRENT_PARKING_SESSION_FOUND'}), 200
 
 def getavailableparkingspace():
     cur = mysql.connection.cursor()
