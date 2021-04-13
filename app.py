@@ -147,5 +147,9 @@ def currentparkingsession():
 def getavailableparkingspace():
     return parking.getavailableparkingspace()
 
+@app.route('/carexit', methods=['POST'])
+def carexit():
+    return camera.carexit()
+
 if __name__ == '__main__' :     
     app.run(debug=True, host = '0.0.0.0')
