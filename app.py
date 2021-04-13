@@ -32,6 +32,7 @@ import user
 import auth
 import camera
 import parking
+import payment
 
 # def check_token(func):
 #     @wraps(func)
@@ -150,6 +151,10 @@ def getavailableparkingspace():
 @app.route('/carexit', methods=['POST'])
 def carexit():
     return camera.carexit()
+
+@app.route('/memberpaynow', methods=['POST'])
+def memberpaynow():
+    return payment.memberpaynow()
 
 if __name__ == '__main__' :     
     app.run(debug=True, host = '0.0.0.0')
