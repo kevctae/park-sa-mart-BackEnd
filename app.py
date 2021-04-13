@@ -151,5 +151,9 @@ def getavailableparkingspace():
 def carexit():
     return camera.carexit()
 
+@app.route('/memberpaynow', methods=['POST'])
+def memberpaynow():
+    return payment.memberpaynow()
+
 if __name__ == '__main__' :     
     app.run(debug=True, host = '0.0.0.0')
