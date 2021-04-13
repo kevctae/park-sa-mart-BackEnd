@@ -32,7 +32,7 @@ def memberpaynow():
             if token['wallet'] < parking_cost:
                 mysql.connection.commit()
                 cur.close()
-                return jsonify({'message' : 'WALLET_MONEY_NOT_SUFFICIENT']}) ,409
+                return jsonify({'message' : 'WALLET_MONEY_NOT_SUFFICIENT'}) ,409
             else:
                 token['wallet'] = token['wallet'] - parking_cost
                 cur.execute('UPDATE Account SET wallet = %s WHERE email = %s' , (token['wallet'],email,))
@@ -43,4 +43,4 @@ def memberpaynow():
     else:
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message' : 'PARKING_FEE_IS_PAID']}) ,409
+        return jsonify({'message' : 'PARKING_FEE_IS_PAID'}) ,409

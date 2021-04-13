@@ -32,6 +32,7 @@ import user
 import auth
 import camera
 import parking
+import payment
 
 # def check_token(func):
 #     @wraps(func)
