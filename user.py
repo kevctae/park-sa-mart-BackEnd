@@ -137,7 +137,7 @@ def returncarlist():
     else:
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message' : 'NO_CAR_OWNED'}), 409
+        return jsonify({}), 204
 
 def setmainpaymentmethod():
     try:
@@ -186,7 +186,7 @@ def retrieveprofile():
     else:
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message' : 'INVALID_EMAIL'}) ,409
+        return jsonify({'message' : 'INVALID_EMAIL'}) ,403
 
 def topupwallet():
     try:
@@ -212,5 +212,5 @@ def topupwallet():
     else:
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message' : 'INVALID_EMAIL'}), 409
+        return jsonify({'message' : 'INVALID_EMAIL'}), 403
      
