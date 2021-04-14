@@ -61,6 +61,11 @@ def removecar():
         return jsonify({'message' : 'BAD_PAYLOAD'}) , 400
     token = generate_token(email)
     cur = mysql.connection.cursor()
+    checkCurrentParkingValue = cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and exit_datetime IS NULL', (platenum,platecity,))
+    if checkCurrentParkingValue > 0:
+        mysql.connection.commit()
+        cur.close()
+        return jsonify({'message' : 'NOT_ALLOW_TO_REMOVE_CAR'}) ,400
     cur.execute('DELETE FROM Cars WHERE email = %s and platenum = %s and platecity = %s', (email,platenum,platecity,))
     mysql.connection.commit()
     cur.close()
