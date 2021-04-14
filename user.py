@@ -4,14 +4,21 @@ def editprofile():
     try:
         old_email = request.json['old_email']
         email = request.json['email']
+        old_password = request.json['old_password']
         password = request.json['password']
         fname = request.json['fname']
         lname = request.json['lname']
     except:
         return jsonify({'message' : 'BAD_PAYLOAD'}) , 400
     cur = mysql.connection.cursor()
-    checkValue = cur.execute('SELECT email FROM Account WHERE email = %s', (email,))
-    if checkValue > 0:
+    checkValue = cur.execute('SELECT * FROM Account WHERE email = %s and password = %s', (old_email,old_password,))
+    if checkValue == 0:
+        mysql.connection.commit()
+        cur.close()
+        return jsonify({'message' : 'CURRENT_EMAIL_OR_PASSWORD_IS_INVALID'}) ,400
+    cur.fetchall()
+    checkEmailValue = cur.execute('SELECT email FROM Account WHERE email = %s', (email,))
+    if checkEmailValue > 0:
         mysql.connection.commit()
         cur.close()
         return jsonify({'message' : 'EMAIL_EXISTED'}) ,400

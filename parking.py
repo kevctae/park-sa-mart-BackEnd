@@ -39,6 +39,8 @@ def currentparkingsession():
         cur.close()
         return jsonify({'message' : 'NO_CURRENT_PAKRING_SESSION_FOUND'}), 400
 
+
+
 def getavailableparkingspace():
     cur = mysql.connection.cursor()
     cur.callproc('Find_available_space');
