@@ -137,7 +137,7 @@ def returncarlist():
     else:
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message' : 'NO_CAR_OWNED'}), 404
+        return jsonify({'message' : 'NO_CAR_OWNED'}), 400
 
 def setmainpaymentmethod():
     try:
