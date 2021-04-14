@@ -14,7 +14,7 @@ def editprofile():
     if checkValue > 0:
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message' : 'EMAIL_EXISTED'}) ,409
+        return jsonify({'message' : 'EMAIL_EXISTED'}) ,400
     else:
         cur.execute('UPDATE Account SET email = %s, password = %s, fname = %s, lname = %s WHERE email = %s', (email,password,fname,lname,old_email,))
         token = generate_token(email)
@@ -38,7 +38,7 @@ def addcar():
     if checkValue > 0:
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message':'CAR_OWNED'}) ,409
+        return jsonify({'message':'CAR_OWNED'}) ,400
     else:
         cur.execute('INSERT INTO Cars(platenum,platecity,email,brand,model) VALUES(%s,%s,%s,%s,%s)', (platenum,platecity,email,brand,model,))
         mysql.connection.commit()
@@ -82,7 +82,7 @@ def addcard():
     if checkValue > 0:
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message' : 'USER_ALREADY_OWNS_CARD'}) ,409
+        return jsonify({'message' : 'USER_ALREADY_OWNS_CARD'}) ,400
     else:
         cur.execute('INSERT INTO CardOwns(card_no,email) VALUES(%s,%s)', (card_no, email,))
         mysql.connection.commit()
@@ -120,7 +120,7 @@ def setprimarycard():
     else:
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message' : 'CARD_NOT_OWNED_BY_THE_USER'}),409
+        return jsonify({'message' : 'CARD_NOT_OWNED_BY_THE_USER'}),400
 
 
 def returncarlist():
@@ -137,7 +137,7 @@ def returncarlist():
     else:
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message' : 'NO_CAR_OWNED'}), 200
+        return jsonify({'message' : 'NO_CAR_OWNED'}), 400
 
 def setmainpaymentmethod():
     try:
@@ -158,7 +158,7 @@ def setmainpaymentmethod():
         if checkValue == 0:
             mysql.connection.commit()
             cur.close()
-            return jsonify({'message' : 'CARD_NOT_OWNED_BY_THE_USER'}) ,409
+            return jsonify({'message' : 'CARD_NOT_OWNED_BY_THE_USER'}) ,400
         cur.fetchall()
         cur.execute('UPDATE Account SET main_payment_method = %s, primary_card_no = %s WHERE email = %s', (method,card_no,email,))
         mysql.connection.commit()
@@ -186,7 +186,7 @@ def retrieveprofile():
     else:
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message' : 'INVALID_EMAIL'}) ,403
+        return jsonify({'message' : 'INVALID_EMAIL'}) ,400
 
 def topupwallet():
     try:
@@ -212,5 +212,5 @@ def topupwallet():
     else:
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message' : 'INVALID_EMAIL'}), 403
+        return jsonify({'message' : 'INVALID_EMAIL'}), 400
      
