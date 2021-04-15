@@ -17,17 +17,24 @@ def editprofile():
         cur.close()
         return jsonify({'message' : 'CURRENT_EMAIL_OR_PASSWORD_IS_INVALID'}) ,400
     cur.fetchall()
-    checkEmailValue = cur.execute('SELECT email FROM Account WHERE email = %s', (email,))
-    if checkEmailValue > 0:
-        mysql.connection.commit()
-        cur.close()
-        return jsonify({'message' : 'EMAIL_EXISTED'}) ,409
-    else:
+    if old_email == email:
         cur.execute('UPDATE Account SET email = %s, password = %s, fname = %s, lname = %s WHERE email = %s', (email,password,fname,lname,old_email,))
         token = generate_token(email)
         mysql.connection.commit()
         cur.close()
         return jsonify({'email' : email, 'token' : token, 'expiresIn' : '600'}) , 201
+    else:
+        checkEmailValue = cur.execute('SELECT email FROM Account WHERE email = %s', (email,))
+        if checkEmailValue > 0:
+            mysql.connection.commit()
+            cur.close()
+            return jsonify({'message' : 'EMAIL_EXISTED'}) ,409
+        else:
+            cur.execute('UPDATE Account SET email = %s, password = %s, fname = %s, lname = %s WHERE email = %s', (email,password,fname,lname,old_email,))
+            token = generate_token(email)
+            mysql.connection.commit()
+            cur.close()
+            return jsonify({'email' : email, 'token' : token, 'expiresIn' : '600'}) , 201
 
 
 def addcar():
