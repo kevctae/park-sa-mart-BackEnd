@@ -240,5 +240,14 @@ def recentparkingsessions():
     except:
         return jsonify({'message' : 'BAD_PAYLOAD'}) , 400
     cur = mysql.connection.cursor()
-
+    checkValue = cur.execute('SELECT P.parking_id,entry_picture,exit_picture,parking_platenum,parking_platecity,entry_datetime,exit_datetime,building,floor,invoice_id,amount,method,payment_datetime FROM Parking_record as P LEFT JOIN Invoice as I ON P.parking_id = I.parking_id WHERE email = %s ORDER BY P.parking_id DESC LIMIT 5', (email,))
+    if checkValue > 0:
+        result = cur.fetchall()
+        myresult = cur.fetchall()
+        cur.close()
+        return jsonify(result), 200
+    else:
+        mysql.connection.commit()
+        cur.close()
+        return jsonify({'message' : 'NO_PARKING_SESSION_FOUND'}), 400
 

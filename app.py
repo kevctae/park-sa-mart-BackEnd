@@ -153,8 +153,15 @@ def carexit():
     return camera.carexit()
 
 @app.route('/memberpaynow', methods=['POST'])
+@check_token
 def memberpaynow():
     return payment.memberpaynow()
+
+@app.route('/recentparkingsessions', methods=['POST'])
+@check_token
+def recentparkingsessions():
+    return user.recentparkingsessions()
+
 
 if __name__ == '__main__' :     
     app.run(debug=True, host = '0.0.0.0')
