@@ -233,3 +233,12 @@ def topupwallet():
         cur.close()
         return jsonify({'message' : 'INVALID_EMAIL'}), 400
      
+
+def recentparkingsessions():
+    try:
+        email = request.json['email']
+    except:
+        return jsonify({'message' : 'BAD_PAYLOAD'}) , 400
+    cur = mysql.connection.cursor()
+
+
