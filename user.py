@@ -8,6 +8,7 @@ def editprofile():
         password = request.json['password']
         fname = request.json['fname']
         lname = request.json['lname']
+        profile_picture = request.json['profile_picture']
     except:
         return jsonify({'message' : 'BAD_PAYLOAD'}) , 400
     cur = mysql.connection.cursor()
@@ -18,7 +19,7 @@ def editprofile():
         return jsonify({'message' : 'CURRENT_EMAIL_OR_PASSWORD_IS_INVALID'}) ,400
     cur.fetchall()
     if old_email == email:
-        cur.execute('UPDATE Account SET email = %s, password = %s, fname = %s, lname = %s WHERE email = %s', (email,password,fname,lname,old_email,))
+        cur.execute('UPDATE Account SET email = %s, password = %s, fname = %s, lname = %s, profile_picture = %s WHERE email = %s', (email,password,fname,lname,old_email,profile_picture,))
         token = generate_token(email)
         mysql.connection.commit()
         cur.close()
@@ -30,7 +31,7 @@ def editprofile():
             cur.close()
             return jsonify({'message' : 'EMAIL_EXISTED'}) ,409
         else:
-            cur.execute('UPDATE Account SET email = %s, password = %s, fname = %s, lname = %s WHERE email = %s', (email,password,fname,lname,old_email,))
+            cur.execute('UPDATE Account SET email = %s, password = %s, fname = %s, lname = %s, profile_picture = %s WHERE email = %s', (email,password,fname,lname,old_email,profile_picture,))
             token = generate_token(email)
             mysql.connection.commit()
             cur.close()
@@ -195,7 +196,7 @@ def retrieveprofile():
         return jsonify({'message' : 'BAD_PAYLOAD'}) , 400
     token = generate_token(email)
     cur=mysql.connection.cursor()
-    checkvalue = cur.execute('SELECT fname,lname,wallet,main_payment_method,primary_card_no FROM Account WHERE email = %s' , (email,))
+    checkvalue = cur.execute('SELECT fname,lname,wallet,main_payment_method,primary_card_no,profile_picture FROM Account WHERE email = %s' , (email,))
     if checkvalue>0:
         result=cur.fetchone()
         cur.close()
