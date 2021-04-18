@@ -7,7 +7,7 @@ def currentparkingsession():
     checkValue = cur.execute('SELECT parking_id,entry_datetime,building,floor,entry_picture,parking_platenum,parking_platecity FROM Parking_record WHERE email = %s and exit_datetime IS NULL', (email,))
     if checkValue > 0:
         result = cur.fetchone()
-        now = datetime.datetime.now(tz)
+        now = datetime.datetime.now()
         time_delta = (now - result['entry_datetime'])
         total_seconds = time_delta.total_seconds()
         minutes = total_seconds/60
