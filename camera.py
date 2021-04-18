@@ -34,13 +34,17 @@ def carexit():
     except:
         return jsonify({'message' : 'Failed'})
     cur = mysql.connection.cursor()
+    checkLegitValue = cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and exit_datetime IS NULL', (parking_platenum,parking_platecity,))
+    if checkLegitValue == 0:
+        return jsonify({'message' : 'LICENSE_PLATE_NOT_FOUND'})
+    cur.fetchall()
     checkValue = cur.execute('SELECT email FROM Cars WHERE platenum = %s and platecity = %s', (parking_platenum,parking_platecity,))
     exit_datetime = datetime.datetime.strptime(exit_datetime, '%Y-%m-%d %H:%M:%S')
     if checkValue > 0: # is member
         temp = cur.fetchone()
         email = temp['email']
         cur.fetchall()
-        checkPaymentValue = cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and exit_datetime IS NULL and parking_id  in (select parking_id from Invoice)', (parking_platenum,parking_platecity,))
+        checkPaymentValue = cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and exit_datetime IS NULL and parking_id  in (select parking_id from Invoice) ORDER BY parking_id DESC LIMIT 1', (parking_platenum,parking_platecity,))
         if checkPaymentValue > 0: # member already paid 
             result = cur.fetchone()
             cur.execute('SELECT * FROM Invoice WHERE parking_id = %s', (result['parking_id'],))
@@ -65,7 +69,7 @@ def carexit():
                 return jsonify({'message' : 'Please Collect Additional Cash Before Opening Gate', 'Amount' : additional_cost})
         else:  # member not paid
             cur.fetchall()
-            cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and exit_datetime IS NULL and parking_id not in (select parking_id from Invoice)', (parking_platenum,parking_platecity,))
+            cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and exit_datetime IS NULL and parking_id not in (select parking_id from Invoice) ORDER BY parking_id DESC LIMIT 1', (parking_platenum,parking_platecity,))
             result = cur.fetchone()
             now = datetime.datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Bangkok'))
             time_delta = (exit_datetime - result['entry_datetime'])
@@ -101,7 +105,7 @@ def carexit():
                     cur.close()
                     return jsonify({'message' : 'Open Gate'})
     else: # is visitor
-        checkPaymentValue = cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and exit_datetime IS NULL and parking_id  in (select parking_id from Invoice)', (parking_platenum,parking_platecity,))
+        checkPaymentValue = cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and exit_datetime IS NULL and parking_id  in (select parking_id from Invoice) ORDER BY parking_id DESC LIMIT 1', (parking_platenum,parking_platecity,))
         if checkPaymentValue > 0: # visitor already paid
             result = cur.fetchone()
             cur.execute('SELECT * FROM Invoice WHERE parking_id = %s', (result['parking_id'],))
@@ -126,7 +130,7 @@ def carexit():
                 return jsonify({'message' : 'Please Collect Additional Cash Before Opening Gate', 'Amount' : additional_cost})
         else:
             cur.fetchall()
-            cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and exit_datetime IS NULL and parking_id not in (select parking_id from Invoice)', (parking_platenum,parking_platecity,))
+            cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and exit_datetime IS NULL and parking_id not in (select parking_id from Invoice) ORDER BY parking_id DESC LIMIT 1', (parking_platenum,parking_platecity,))
             result = cur.fetchone()
             now = datetime.datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Bangkok'))
             time_delta = (exit_datetime - result['entry_datetime'])

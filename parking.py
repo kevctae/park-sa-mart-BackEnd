@@ -4,7 +4,7 @@ def currentparkingsession():
     email = request.json['email']
     cur = mysql.connection.cursor()
     token = generate_token(email)
-    checkValue = cur.execute('SELECT parking_id,entry_datetime,building,floor,entry_picture,parking_platenum,parking_platecity FROM Parking_record WHERE email = %s and exit_datetime IS NULL', (email,))
+    checkValue = cur.execute('SELECT parking_id,entry_datetime,building,floor,entry_picture,parking_platenum,parking_platecity FROM Parking_record WHERE email = %s and exit_datetime IS NULL ORDER BY parking_id DESC LIMIT 1', (email,))
     if checkValue > 0:
         result = cur.fetchone()
         now = datetime.datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Bangkok'))
