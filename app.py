@@ -7,6 +7,7 @@ import jwt
 import datetime
 from flask_cors import CORS
 import math
+import pytz
 
 
 app = Flask(__name__)
@@ -21,6 +22,7 @@ app.config['MYSQL_PORT'] = db['mysql_port']
 app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = 'parksamart'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+tz = pytz.timezone('Asia/Bangkok')
 mysql = MySQL(app)
 
 def generate_token(email):
