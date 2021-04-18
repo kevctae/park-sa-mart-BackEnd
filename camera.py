@@ -45,7 +45,7 @@ def carexit():
             result = cur.fetchone()
             cur.execute('SELECT * FROM Invoice WHERE parking_id = %s', (result['parking_id'],))
             invoice = cur.fetchone()
-            now = datetime.datetime.now()
+            now = datetime.datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Bangkok'))
             time_delta = (exit_datetime - invoice['payment_datetime'])
             total_seconds = time_delta.total_seconds()
             minutes = total_seconds/60
@@ -67,7 +67,7 @@ def carexit():
             cur.fetchall()
             cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and exit_datetime IS NULL and parking_id not in (select parking_id from Invoice)', (parking_platenum,parking_platecity,))
             result = cur.fetchone()
-            now = datetime.datetime.now()
+            now = datetime.datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Bangkok'))
             time_delta = (exit_datetime - result['entry_datetime'])
             total_seconds = time_delta.total_seconds()
             minutes = total_seconds/60
@@ -106,7 +106,7 @@ def carexit():
             result = cur.fetchone()
             cur.execute('SELECT * FROM Invoice WHERE parking_id = %s', (result['parking_id'],))
             invoice = cur.fetchone()
-            now = datetime.datetime.now()
+            now = datetime.datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Bangkok'))
             time_delta = (exit_datetime - invoice['payment_datetime'])
             total_seconds = time_delta.total_seconds()
             minutes = total_seconds/60
@@ -128,7 +128,7 @@ def carexit():
             cur.fetchall()
             cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and exit_datetime IS NULL and parking_id not in (select parking_id from Invoice)', (parking_platenum,parking_platecity,))
             result = cur.fetchone()
-            now = datetime.datetime.now()
+            now = datetime.datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Bangkok'))
             time_delta = (exit_datetime - result['entry_datetime'])
             total_seconds = time_delta.total_seconds()
             minutes = total_seconds/60
