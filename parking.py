@@ -7,7 +7,7 @@ def currentparkingsession():
     checkValue = cur.execute('SELECT parking_id,entry_datetime,building,floor,entry_picture,parking_platenum,parking_platecity FROM Parking_record WHERE email = %s and exit_datetime IS NULL ORDER BY parking_id DESC LIMIT 1', (email,))
     if checkValue > 0:
         result = cur.fetchone()
-        now = datetime.datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Bangkok'))
+        now = datetime.datetime.now(pytz.timezone('Asia/Bangkok'))
         result['entry_datetime'] = pytz.utc.localize(result['entry_datetime'])
         time_delta = (now - result['entry_datetime'])
         total_seconds = time_delta.total_seconds()
