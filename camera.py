@@ -47,8 +47,10 @@ def carexit():
         checkPaymentValue = cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and exit_datetime IS NULL and parking_id  in (select parking_id from Invoice) ORDER BY parking_id DESC LIMIT 1', (parking_platenum,parking_platecity,))
         if checkPaymentValue > 0: # member already paid 
             result = cur.fetchone()
+            cur.fetchall()
             cur.execute('SELECT * FROM Invoice WHERE parking_id = %s', (result['parking_id'],))
             invoice = cur.fetchone()
+            cur.fetchall()
             now = datetime.datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Bangkok'))
             time_delta = (exit_datetime - invoice['payment_datetime'])
             total_seconds = time_delta.total_seconds()
@@ -81,6 +83,7 @@ def carexit():
             else:
                 hours = math.ceil(minutes/60)
                 parking_cost = 15 * hours
+            cur.fetchall()
             cur.execute('SELECT main_payment_method,wallet FROM Account WHERE email = %s', (email,))
             token = cur.fetchone()
             if token['main_payment_method'] == 'VISA':
@@ -108,6 +111,7 @@ def carexit():
         checkPaymentValue = cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and exit_datetime IS NULL and parking_id  in (select parking_id from Invoice) ORDER BY parking_id DESC LIMIT 1', (parking_platenum,parking_platecity,))
         if checkPaymentValue > 0: # visitor already paid
             result = cur.fetchone()
+            cur.fetchall()
             cur.execute('SELECT * FROM Invoice WHERE parking_id = %s', (result['parking_id'],))
             invoice = cur.fetchone()
             now = datetime.datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Bangkok'))
