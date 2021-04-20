@@ -51,7 +51,7 @@ def carexit():
             cur.execute('SELECT * FROM Invoice WHERE parking_id = %s', (result['parking_id'],))
             invoice = cur.fetchone()
             cur.fetchall()
-            now = datetime.datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Bangkok'))
+            now = datetime.datetime.now()
             time_delta = (exit_datetime - invoice['payment_datetime'])
             total_seconds = time_delta.total_seconds()
             minutes = total_seconds/60
@@ -73,7 +73,7 @@ def carexit():
             cur.fetchall()
             cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and exit_datetime IS NULL and parking_id not in (select parking_id from Invoice) ORDER BY parking_id DESC LIMIT 1', (parking_platenum,parking_platecity,))
             result = cur.fetchone()
-            now = datetime.datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Bangkok'))
+            now = datetime.datetime.now()
             time_delta = (exit_datetime - result['entry_datetime'])
             total_seconds = time_delta.total_seconds()
             minutes = total_seconds/60
@@ -86,6 +86,7 @@ def carexit():
             cur.fetchall()
             cur.execute('SELECT main_payment_method,wallet FROM Account WHERE email = %s', (email,))
             token = cur.fetchone()
+            cur.fetchall()
             if token['main_payment_method'] == 'VISA':
                 cur.execute('INSERT INTO Invoice(amount,method,payment_datetime,parking_id) VALUES(%s,%s,%s,%s)',(parking_cost,token['main_payment_method'],now,result['parking_id'],))
                 cur.execute('UPDATE Parking_record SET exit_picture = %s, exit_datetime = %s WHERE parking_id = %s', (exit_picture,exit_datetime,result['parking_id'],))
@@ -114,7 +115,7 @@ def carexit():
             cur.fetchall()
             cur.execute('SELECT * FROM Invoice WHERE parking_id = %s', (result['parking_id'],))
             invoice = cur.fetchone()
-            now = datetime.datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Bangkok'))
+            now = datetime.datetime.now()
             time_delta = (exit_datetime - invoice['payment_datetime'])
             total_seconds = time_delta.total_seconds()
             minutes = total_seconds/60
@@ -136,7 +137,7 @@ def carexit():
             cur.fetchall()
             cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and exit_datetime IS NULL and parking_id not in (select parking_id from Invoice) ORDER BY parking_id DESC LIMIT 1', (parking_platenum,parking_platecity,))
             result = cur.fetchone()
-            now = datetime.datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Bangkok'))
+            now = datetime.datetime.now()
             time_delta = (exit_datetime - result['entry_datetime'])
             total_seconds = time_delta.total_seconds()
             minutes = total_seconds/60

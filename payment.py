@@ -11,8 +11,7 @@ def memberpaynow():
     checkValue = cur.execute('SELECT * FROM Parking_record WHERE parking_id = %s and parking_id NOT IN (select parking_id from Invoice)', (parking_id,))
     if checkValue > 0:
         result = cur.fetchone()
-        now = datetime.datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Bangkok'))
-        result['entry_datetime'] = pytz.utc.localize(result['entry_datetime'])
+        now = datetime.datetime.now()
         time_delta = (now - result['entry_datetime'])
         total_seconds = time_delta.total_seconds()
         minutes = total_seconds/60
