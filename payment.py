@@ -27,7 +27,7 @@ def memberpaynow():
             cur.execute('INSERT INTO Invoice(amount,method,payment_datetime,parking_id) VALUES(%s,%s,%s,%s)',(parking_cost,token['main_payment_method'],now,parking_id,))
             mysql.connection.commit()
             cur.close()
-            return jsonify({'payment_datetime' : now, 'amount' : parking_cost, 'method' : token['main_payment_method']}) ,201
+            return jsonify({'payment_datetime' : now, 'amount' : parking_cost, 'method' : token['main_payment_method'], 'wallet' : token['wallet']}) ,201
         else:
             if token['wallet'] < parking_cost:
                 mysql.connection.commit()
@@ -39,7 +39,7 @@ def memberpaynow():
                 cur.execute('INSERT INTO Invoice(amount,method,payment_datetime,parking_id) VALUES(%s,%s,%s,%s)',(parking_cost,token['main_payment_method'],now,parking_id,))
                 mysql.connection.commit()
                 cur.close()
-                return jsonify({'payment_datetime' : now, 'amount' : parking_cost, 'method' : token['main_payment_method']}) ,201
+                return jsonify({'payment_datetime' : now, 'amount' : parking_cost, 'method' : token['main_payment_method'], 'wallet' : token['wallet']}) ,201
     else:
         mysql.connection.commit()
         cur.close()
