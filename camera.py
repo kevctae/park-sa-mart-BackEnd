@@ -87,7 +87,7 @@ def carexit():
                 cur.execute('UPDATE Parking_record SET exit_picture = %s, exit_datetime = %s WHERE parking_id = %s', (exit_picture,exit_datetime,result['parking_id'],))
                 mysql.connection.commit()
                 cur.close()
-                return jsonify({'message' : 'Open Gate','Amount' : parking_cost]})
+                return jsonify({'message' : 'Open Gate','Amount' : parking_cost})
             else: # member use wallet
                 if token['wallet'] < parking_cost:
                     cur.execute('INSERT INTO Invoice(amount,method,payment_datetime,parking_id) VALUES(%s,%s,%s,%s)',(parking_cost,'Cash',now,result['parking_id'],))
