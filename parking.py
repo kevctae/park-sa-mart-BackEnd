@@ -68,7 +68,7 @@ def recordcarentry(entry_picture,building,floor,parking_platenum,parking_plateci
 
 def updatecarfloor(building,floor,parking_platenum,parking_platecity,update_datetime):
     cur = mysql.connection.cursor()
-    checkValue = cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and parking_id not in (select parking_id from Invoice)', (parking_platenum,parking_platecity,))
+    checkValue = cur.execute('SELECT * FROM Parking_record WHERE parking_platenum = %s and parking_platecity = %s and parking_id not in (select parking_id from Invoice) ORDER BY parking_id DESC LIMIT 1', (parking_platenum,parking_platecity,))
     if checkValue == 0:
         mysql.connection.commit()
         cur.close()
@@ -80,7 +80,7 @@ def updatecarfloor(building,floor,parking_platenum,parking_platecity,update_date
     total_seconds = time_delta.total_seconds()
     minutes = total_seconds/60
     if minutes < 15:
-        cur.execute('UPDATE Parking_record SET building = %s, floor = %s WHERE parking_platenum = %s and parking_platecity = %s and parking_id not in (select parking_id from Invoice)', (building,floor,parking_platenum,parking_platecity,))
+        cur.execute('UPDATE Parking_record SET building = %s, floor = %s WHERE parking_id = %s', (building,floor,result['parking_id'],))
         mysql.connection.commit()
         cur.close()
         return jsonify({'message' : 'Success, Updated'}) ,200
