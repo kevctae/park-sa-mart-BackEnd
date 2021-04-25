@@ -24,7 +24,7 @@ def register():
             token = generate_token(email)
             mysql.connection.commit()
             cur.close()
-            return jsonify({'token' : token, 'email' : email, 'expiresIn' : '600'}) ,201
+            return jsonify({'token' : token, 'email' : email, 'expiresIn' : '7200'}) ,201
 
 def login():
     try:
@@ -39,7 +39,7 @@ def login():
         token = generate_token(email)
         mysql.connection.commit()
         cur.close()
-        return jsonify({'email': userAcc['email'], 'token' : token, 'expiresIn' : '600'}), 200
+        return jsonify({'email': userAcc['email'], 'token' : token, 'expiresIn' : '7200'}), 200
     else:
         mysql.connection.commit()
         cur.close()

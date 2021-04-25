@@ -26,7 +26,7 @@ tz = pytz.timezone('Asia/Bangkok')
 mysql = MySQL(app)
 
 def generate_token(email):
-    expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=600)
+    expiredate = datetime.datetime.utcnow() + datetime.timedelta(seconds=7200)
     token = jwt.encode({'email': email, 'exp' : expiredate}, app.config['SECRET_KEY'])
     return token
 

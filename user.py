@@ -23,7 +23,7 @@ def editprofile():
         token = generate_token(email)
         mysql.connection.commit()
         cur.close()
-        return jsonify({'email' : email, 'token' : token, 'expiresIn' : '600'}) , 201
+        return jsonify({'email' : email, 'token' : token, 'expiresIn' : '7200'}) , 201
     else:
         checkEmailValue = cur.execute('SELECT email FROM Account WHERE email = %s', (email,))
         if checkEmailValue > 0:
@@ -35,7 +35,7 @@ def editprofile():
             token = generate_token(email)
             mysql.connection.commit()
             cur.close()
-            return jsonify({'email' : email, 'token' : token, 'expiresIn' : '600'}) , 201
+            return jsonify({'email' : email, 'token' : token, 'expiresIn' : '7200'}) , 201
 
 
 def addcar():
@@ -58,7 +58,7 @@ def addcar():
         cur.execute('INSERT INTO Cars(platenum,platecity,email,brand,model) VALUES(%s,%s,%s,%s,%s)', (platenum,platecity,email,brand,model,))
         mysql.connection.commit()
         cur.close()
-        return jsonify({'email' : email, 'token' : token, 'expiresIn' : '600'}) ,201
+        return jsonify({'email' : email, 'token' : token, 'expiresIn' : '7200'}) ,201
 
 def removecar():
     try:
@@ -77,7 +77,7 @@ def removecar():
     cur.execute('DELETE FROM Cars WHERE email = %s and platenum = %s and platecity = %s', (email,platenum,platecity,))
     mysql.connection.commit()
     cur.close()
-    return jsonify({'email' : email, 'platenum' : platenum, 'platecity' : platecity, 'token' : token, 'expiresIn' : '600'}) ,200
+    return jsonify({'email' : email, 'platenum' : platenum, 'platecity' : platecity, 'token' : token, 'expiresIn' : '7200'}) ,200
 
 
 def addcard():
@@ -107,7 +107,7 @@ def addcard():
         cur.execute('INSERT INTO CardOwns(card_no,email) VALUES(%s,%s)', (card_no, email,))
         mysql.connection.commit()
         cur.close()
-        return jsonify({'email' : email, 'card_no' : card_no, 'token' : token, 'expiresIn' : '600'}) ,201
+        return jsonify({'email' : email, 'card_no' : card_no, 'token' : token, 'expiresIn' : '7200'}) ,201
 
 def removecard():
     try:
@@ -120,7 +120,7 @@ def removecard():
     cur.execute('DELETE FROM CardOwns WHERE email = %s and card_no = %s', (email,card_no,))
     mysql.connection.commit()
     cur.close()
-    return jsonify({'email' : email, 'card_no' : card_no, 'token' : token, 'expiresIn' : '600'}) ,200
+    return jsonify({'email' : email, 'card_no' : card_no, 'token' : token, 'expiresIn' : '7200'}) ,200
 
 def setprimarycard():
     try:
@@ -136,7 +136,7 @@ def setprimarycard():
         cur.execute('UPDATE Account SET primary_card_no = %s WHERE email = %s', (card_no,email,))
         mysql.connection.commit()
         cur.close()
-        return jsonify({'email' : email, 'card_no' : card_no, 'token' : token, 'expiresIn' : '600'}) ,201
+        return jsonify({'email' : email, 'card_no' : card_no, 'token' : token, 'expiresIn' : '7200'}) ,201
     else:
         mysql.connection.commit()
         cur.close()
@@ -171,7 +171,7 @@ def setmainpaymentmethod():
         cur.execute('UPDATE Account SET main_payment_method = %s WHERE email = %s', (method,email,))
         mysql.connection.commit()
         cur.close()
-        return jsonify({'email' : email, 'method' : method, 'token' : token, 'expiresIn' : '600'}) ,201
+        return jsonify({'email' : email, 'method' : method, 'token' : token, 'expiresIn' : '7200'}) ,201
     elif method == 'VISA':
         card_no = request.json['card_no']
         checkValue = cur.execute('SELECT * FROM CardOwns WHERE email = %s and card_no = %s', (email,card_no,))
@@ -183,7 +183,7 @@ def setmainpaymentmethod():
         cur.execute('UPDATE Account SET main_payment_method = %s, primary_card_no = %s WHERE email = %s', (method,card_no,email,))
         mysql.connection.commit()
         cur.close()
-        return jsonify({'email' : email, 'method' : method, 'token' : token, 'expiresIn' : '600'}) ,201
+        return jsonify({'email' : email, 'method' : method, 'token' : token, 'expiresIn' : '7200'}) ,201
     else:
         mysql.connection.commit()
         cur.close()
@@ -201,7 +201,7 @@ def retrieveprofile():
         result=cur.fetchone()
         cur.close()
         result['token'] = token
-        result['expiresIn'] = '600'
+        result['expiresIn'] = '7200'
         return jsonify(result), 200
     else:
         mysql.connection.commit()
@@ -228,7 +228,7 @@ def topupwallet():
         cur.execute('UPDATE Account SET wallet = %s WHERE email = %s', (wallet,email,))
         mysql.connection.commit()
         cur.close()
-        return jsonify({'email' : email, 'wallet' : wallet, 'token' : token, 'expiresIn' : '600'}) ,201
+        return jsonify({'email' : email, 'wallet' : wallet, 'token' : token, 'expiresIn' : '7200'}) ,201
     else:
         mysql.connection.commit()
         cur.close()

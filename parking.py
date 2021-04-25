@@ -29,7 +29,7 @@ def currentparkingsession():
         else:
             result['payment_status'] = True
         result['token'] = token
-        result['expiresIn'] = '600'
+        result['expiresIn'] = '7200'
         result['email'] = email
         result['now'] = now
         mysql.connection.commit()
